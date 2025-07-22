@@ -1,0 +1,32 @@
+body {
+  font-family: sans-serif;
+  background: #f5f5f5;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #4CAF50;
+  color: white;
+  padding: 20px 0;
+}
+.profile {
+  margin-top: 30px;
+}
+.profile-pic {
+  width: 100px;
+  border-radius: 50%;
+}
+.gallery {
+  margin: 20px;
+}
+.gallery img {
+  width: 150px;
+  margin: 10px;
+  border-radius: 10px;
+}
+footer {
+  background: #ddd;
+  padding: 10px;
+  margin-top: 30px;
+}
