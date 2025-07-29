@@ -2,10 +2,97 @@
 <html>
 <head>
   <title>Chat - FeelFree</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+    header {
+      background: #fff;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+    }
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 90vh;
+      overflow: hidden;
+    }
+    .messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .msg {
+      max-width: 70%;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .sent {
+      align-self: flex-end;
+      background: #dcf8c6;
+    }
+    .received {
+      align-self: flex-start;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+    .input-area {
+      display: flex;
+      padding: 10px;
+      background: #fff;
+      border-top: 1px solid #ccc;
+    }
+    .input-area input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+    }
+    .input-area button {
+      margin-left: 10px;
+      padding: 8px 15px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 20px;
+    }
+  </style>
 </head>
 <body>
-  <h1>FeelFree Chat</h1>
-  <p>This is a demo chat page. Coming soon...</p>
-  <a href="index.html">← Back to Home</a>
+
+  <header>FeelFree Chat</header>
+
+  <div class="chat-container">
+    <div class="messages" id="messages">
+      <div class="msg received">Hi Yash 👋</div>
+      <div class="msg sent">Hey bro, what's up?</div>
+      <div class="msg received">Ready to build FeelFree? 😄</div>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="inputMsg" placeholder="Type a message...">
+      <button onclick="sendMsg()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    function sendMsg() {
+      let input = document.getElementById('inputMsg');
+      let msgText = input.value.trim();
+      if (msgText !== "") {
+        let msgDiv = document.createElement("div");
+        msgDiv.className = "msg sent";
+        msgDiv.textContent = msgText;
+        document.getElementById("messages").appendChild(msgDiv);
+        input.value = "";
+        msgDiv.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  </script>
+
 </body>
 </html>
