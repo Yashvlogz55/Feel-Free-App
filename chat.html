@@ -1,26 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Chat - FeelFree</title>
+  <meta charset="UTF-8">
+  <title>FeelFree - Chat</title>
   <style>
-    body { font-family: sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
-    header {
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; display: flex; height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 35%;
+      max-width: 300px;
       background: #fff;
-      padding: 15px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-      border-bottom: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+      overflow-y: auto;
     }
-    .chat-container {
+    .friend {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+    .friend:hover {
+      background: #f0f0f0;
+    }
+
+    /* Chat area */
+    .chat-area {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      height: 90vh;
-      overflow: hidden;
+      background: #f9f9f9;
+    }
+    .chat-header {
+      padding: 15px;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      font-weight: bold;
     }
     .messages {
       flex: 1;
-      padding: 10px;
+      padding: 15px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -48,7 +67,7 @@
     }
     .input-area input {
       flex: 1;
-      padding: 8px;
+      padding: 10px;
       border: 1px solid #ccc;
       border-radius: 20px;
     }
@@ -64,15 +83,19 @@
 </head>
 <body>
 
-  <header>FeelFree Chat</header>
+  <!-- Sidebar with Friend List -->
+  <div class="sidebar">
+    <div class="friend" onclick="openChat('Rohit')">Rohit</div>
+    <div class="friend" onclick="openChat('Sneha')">Sneha</div>
+    <div class="friend" onclick="openChat('Om')">Om</div>
+  </div>
 
-  <div class="chat-container">
+  <!-- Chat Area -->
+  <div class="chat-area">
+    <div class="chat-header" id="chatHeader">Select a friend</div>
     <div class="messages" id="messages">
-      <div class="msg received">Hi Yash 👋</div>
-      <div class="msg sent">Hey bro, what's up?</div>
-      <div class="msg received">Ready to build FeelFree? 😄</div>
+      <!-- messages will be loaded here -->
     </div>
-
     <div class="input-area">
       <input type="text" id="inputMsg" placeholder="Type a message...">
       <button onclick="sendMsg()">Send</button>
@@ -80,19 +103,52 @@
   </div>
 
   <script>
+    let currentFriend = "";
+    const chatData = {
+      "Rohit": [
+        { type: "received", text: "Hi Yash!" },
+        { type: "sent", text: "Hello Rohit!" }
+      ],
+      "Sneha": [
+        { type: "received", text: "Hey what's up?" }
+      ],
+      "Om": [
+        { type: "received", text: "FeelFree ready?" },
+        { type: "sent", text: "Almost!" }
+      ]
+    };
+
+    function openChat(friend) {
+      currentFriend = friend;
+      document.getElementById("chatHeader").innerText = friend;
+      const messageBox = document.getElementById("messages");
+      messageBox.innerHTML = "";
+
+      const msgs = chatData[friend] || [];
+      msgs.forEach(msg => {
+        const div = document.createElement("div");
+        div.className = `msg ${msg.type}`;
+        div.textContent = msg.text;
+        messageBox.appendChild(div);
+      });
+    }
+
     function sendMsg() {
-      let input = document.getElementById('inputMsg');
-      let msgText = input.value.trim();
-      if (msgText !== "") {
-        let msgDiv = document.createElement("div");
+      const input = document.getElementById("inputMsg");
+      const text = input.value.trim();
+      if (text !== "" && currentFriend !== "") {
+        const msgDiv = document.createElement("div");
         msgDiv.className = "msg sent";
-        msgDiv.textContent = msgText;
+        msgDiv.textContent = text;
         document.getElementById("messages").appendChild(msgDiv);
         input.value = "";
-        msgDiv.scrollIntoView({ behavior: "smooth" });
+
+        if (!chatData[currentFriend]) chatData[currentFriend] = [];
+        chatData[currentFriend].push({ type: "sent", text: text });
       }
     }
   </script>
 
 </body>
 </html>
+
