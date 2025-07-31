@@ -54,6 +54,63 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
+
+  <!-- Signup Form -->
+<h2>Sign Up</h2>
+<input type="email" id="signup-email" placeholder="Email">
+<input type="password" id="signup-password" placeholder="Password">
+<button onclick="signup()">Sign Up</button>
+
+<!-- Login Form -->
+<h2>Login</h2>
+<input type="email" id="login-email" placeholder="Email">
+<input type="password" id="login-password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "तुझा-key",
+    authDomain: "तुझ-proejct.firebaseapp.com",
+    projectId: "तुझा-id",
+    storageBucket: "...",
+    messagingSenderId: "...",
+    appId: "..."
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  window.signup = function () {
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        alert("Signup successful!");
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+  }
+
+  window.login = function () {
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        alert("Login successful!");
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+  }
+</script>
+
+  
   
 </body>
 </html>
