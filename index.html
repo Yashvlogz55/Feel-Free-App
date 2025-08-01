@@ -7,6 +7,16 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!--🔸Chat UI-->
+<h2>FeelFree Chat</h2>
+<p id="userEmail">Not signed in</p>
+<button onclick="signIn()">Sign In with Google</button>
+
+<div>
+  <input type="text" id="msgInput" placeholder="Type your message">
+  <button onclick="sendMessage()">Send</button>
+</div>
+
   <header>
     <h1>Welcome to FeelFree</h1>
     <p>Express yourself. Chat. Share. Be real.</p>
@@ -91,6 +101,60 @@
         });
     };
   </script>
+  <!-- 🔸 हे टाक 'body' संपायच्या आधी (आखरीत) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "तुझ API Key",
+    authDomain: "तुझ Auth domain",
+    projectId: "तुझ project ID",
+    storageBucket: "तुझ Bucket",
+    messagingSenderId: "तुझ sender ID",
+    appId: "तुझ App ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  let currentUser = null;
+
+  function signIn() {
+    signInWithPopup(auth, provider).then(result => {
+      currentUser = result.user;
+      document.getElementById("userEmail").textContent = currentUser.email;
+    });
+  }
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      currentUser = user;
+      document.getElementById("userEmail").textContent = currentUser.email;
+    }
+  });
+
+  async function sendMessage() {
+    const msg = document.getElementById("msgInput").value;
+    if (!msg.trim()) return;
+
+    await addDoc(collection(db, "Message"), {
+      Email: currentUser.email,
+      Text: msg,
+      Timestamp: serverTimestamp(),
+      Uid: currentUser.uid
+    });
+
+    document.getElementById("msgInput").value = "";
+  }
+
+  window.sendMessage = sendMessage;
+  window.signIn = signIn;
+</script>
+
 </body>
 </html>
 
