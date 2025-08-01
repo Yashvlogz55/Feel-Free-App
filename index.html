@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FeelFree - Express Yourself</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -12,105 +14,83 @@
 
   <main>
     <div class="profile">
-      <img src="https://via.placeholder.com/100" class="profile-pic" alt="Profile">
+      <img src="https://via.placeholder.com/100" class="profile-pic" alt="Profile" />
       <h2>@yashvlogz55</h2>
     </div>
 
     <div class="gallery">
-      <img src="https://via.placeholder.com/150" alt="Post 1">
-      <img src="https://via.placeholder.com/150" alt="Post 2">
+      <img src="https://via.placeholder.com/150" alt="Post 1" />
+      <img src="https://via.placeholder.com/150" alt="Post 2" />
     </div>
   </main>
+
+  <!-- Signup Form -->
+  <section>
+    <h2>Sign Up</h2>
+    <input type="email" id="signup-email" placeholder="Email" />
+    <input type="password" id="signup-password" placeholder="Password" />
+    <button onclick="signup()">Sign Up</button>
+  </section>
+
+  <!-- Login Form -->
+  <section>
+    <h2>Login</h2>
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+  </section>
 
   <footer>
     <p>&copy; 2025 FeelFree</p>
   </footer>
 
-  <script src="script.js"></script>
-
-  <a href="profile.html">Profile</a> |
-<a href="chat.html">Chat</a>
-
+  <!-- Firebase Authentication Script -->
   <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAUtH-WN2J6npovr4b3Q86iC2Tc5PABEBE",
-    authDomain: "feelfree-e9213.firebaseapp.com",
-    projectId: "feelfree-e9213",
-    storageBucket: "feelfree-e9213.firebasestorage.app",
-    messagingSenderId: "692261921636",
-    appId: "1:692261921636:web:258aba7926376717dcd071",
-    measurementId: "G-G6C9FJVKMB"
-  };
+    // ✅ तुझं Firebase Config (Ready-to-use)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAUtH-WN2J6npovr4b3Q86iC2Tc5PABEBE",
+      authDomain: "feelfree-e9213.firebaseapp.com",
+      projectId: "feelfree-e9213",
+      storageBucket: "feelfree-e9213.appspot.com",
+      messagingSenderId: "692261921636",
+      appId: "1:692261921636:web:258aba7926376717dcd071"
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    // ✅ Firebase Init
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  <!-- Signup Form -->
-<h2>Sign Up</h2>
-<input type="email" id="signup-email" placeholder="Email">
-<input type="password" id="signup-password" placeholder="Password">
-<button onclick="signup()">Sign Up</button>
+    // 🔐 Signup Function
+    window.signup = function () {
+      const email = document.getElementById("signup-email").value;
+      const password = document.getElementById("signup-password").value;
 
-<!-- Login Form -->
-<h2>Login</h2>
-<input type="email" id="login-email" placeholder="Email">
-<input type="password" id="login-password" placeholder="Password">
-<button onclick="login()">Login</button>
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Signup successful!");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    };
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
+    // 🔑 Login Function
+    window.login = function () {
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
 
-  const firebaseConfig = {
-    apiKey: "तुझा-key",
-    authDomain: "तुझ-proejct.firebaseapp.com",
-    projectId: "तुझा-id",
-    storageBucket: "...",
-    messagingSenderId: "...",
-    appId: "..."
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  window.signup = function () {
-    const email = document.getElementById("signup-email").value;
-    const password = document.getElementById("signup-password").value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        alert("Signup successful!");
-      })
-      .catch(error => {
-        alert(error.message);
-      });
-  }
-
-  window.login = function () {
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        alert("Login successful!");
-      })
-      .catch(error => {
-        alert(error.message);
-      });
-  }
-</script>
-
-  
-  
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Login successful!");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    };
+  </script>
 </body>
 </html>
+
